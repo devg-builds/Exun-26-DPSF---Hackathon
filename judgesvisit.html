@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1, viewport-fit=cover'><title>For the judges · How this was built</title><link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@400;700&family=Reenie+Beanie&family=Special+Elite&family=VT323&display=swap'><link rel='stylesheet' href='/style.css'></head><body class='desk'>
+<svg width='0' height='0' style='position:absolute'><filter id='rf'><feTurbulence type='fractalNoise' baseFrequency='.035' numOctaves='2' seed='4'/><feDisplacementMap in='SourceGraphic' scale='2.5'/></filter><symbol id='fan' viewBox='0 0 60 72'><path d='M30 3 56 12v28c0 16-11 26-26 31C15 66 4 56 4 40V12z' fill='#1c3d6e' stroke='#e5cf9d' stroke-width='3'/><path d='M30 11 49 17v22c0 11-8 19-19 23C19 58 11 50 11 39V17z' fill='none' stroke='#e5cf9d' stroke-width='1.2'/><polygon points='30,16 32.6,22 39,22.6 34.2,26.8 35.7,33 30,29.8 24.3,33 25.8,26.8 21,22.6 27.4,22' fill='#e5cf9d'/><text x='30' y='52' text-anchor='middle' font-family='Special Elite' font-size='15' fill='#e5cf9d'>FAN</text></symbol></svg>
+<svg class='grain'><filter id='gn'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/><feColorMatrix values='0 0 0 0 .35  0 0 0 0 .3  0 0 0 0 .22  0 0 0 .22 0'/></filter><rect width='100%' height='100%' filter='url(#gn)'/></svg>
+<nav class='nav'><span class='pt'><span><svg class='fe' viewBox='0 0 60 72'><use href='#fan'/></svg></span><span class='x'>×</span><span class='bg'><img src='/img2.webp' alt='DPS Faridabad'></span></span><a class='keep' href='#stack'>Stack</a><a href='#crt'>Monitor</a><a href='#nar'>Narrator</a><a href='#desk'>Desk</a><a href='#fonts'>Fonts</a><a href='#puz'>Puzzles</a><a href='#hon'>Honest bit</a><a class='jd keep' href='/'>← Back to the case</a></nav>
+<main class='jp'>
+<section class='fold jv o1'><span class='tab'>★ For the judges and hosts</span><div class='sh'><h1>Peek behind the glitch</h1><div class='big'>The glitch is the feature.</div><p class='ty'>Hi, I’m Dev, in Class 11 at DPS Sector-19, Faridabad. This page explains how my Exun site is made: what it runs on, how the old monitor and the glitching work, and every trick on the desk. The whole site is plain HTML, CSS and JavaScript. No framework and no library.</p><a class='go' href='/'>Go to the case file →</a></div></section>
+
+<section class='fold o2' id='stack'><span class='tab'>The stack</span><div class='sh'><div class='cards ty'>
+<div><b>HTML5</b><p>One page, built from sections: the monitor, the folders, the evidence.</p></div>
+<div><b>CSS3</b><p>All the looks: wood desk, paper, tape, the CRT, the glitch. No texture images at all.</p></div>
+<div><b>JavaScript</b><p>Plain, no libraries. The typing narrator, the chart, the decoder, the grid game, the pin board.</p></div>
+<div><b>SVG</b><p>The FAN emblem I drew, the paper grain and the wobbly hand-drawn effect.</p></div>
+<div><b>Web Speech API</b><p>The VOICE button. The browser reads the story out loud.</p></div>
+<div><b>localStorage</b><p>Remembers the theories you pin, only in your own browser.</p></div>
+<div><b>Google Fonts</b><p>Four fonts. See below.</p></div>
+<div><b>Vercel</b><p>Hosting. Just static files, no server and no database.</p></div></div>
+<p class='ty'><b>Not used:</b> React, Tailwind, jQuery, canvas, any backend, any images for textures. The only pictures are the DPS logo and the emblem.</p></div></section>
+
+<section class='fold o3' id='crt'><span class='tab'>How the old monitor works</span><div class='two'><div class='sh ty'><p>The monitor is one rounded box in beige with a darker curved box inside. It isn’t a picture. Try switching the effects off one at a time.</p>
+<div class='tg2'><button class='k on' data-t='ns'>Scanlines</button><button class='k on' data-t='nv'>Vignette + flicker</button><button class='k on' data-t='nt'>Tear line</button><button class='k' id='gl'>⚡ Glitch it</button><button class='k' id='ty'>▶ Type it</button></div>
+<pre>/* scanlines */
+background: repeating-linear-gradient(
+  transparent 0 2px, rgba(0,0,0,.3) 2px 3px);
+/* curved glass + edge shadow */
+border-radius: 48px / 38px;
+box-shadow: inset 0 0 90px #000;</pre></div>
+<div class='sh'><div class='bz' style='padding:16px'><div class='scr' id='ds' style='height:190px;font-size:20px'><div class='tx' id='dt'><div class='y'>> DEMO SCREEN</div><div>Switch effects off to see what each one does.</div></div><i class='tear'></i></div></div></div></div>
+<div class='sh ty' style='margin-top:18px'><h3>The glitch, in three layers</h3><p><b>1. Always on.</b> The dark edge shadow flickers: a .12 second opacity animation.</p><p><b>2. Random.</b> Every 5 seconds JavaScript gives the screen a class called <code>fz</code> for one second, 30% of the time.</p><p><b>3. Scripted.</b> Lines in the story marked <code>g</code> trigger it when they start typing, like the word Michael.</p>
+<pre>.fz{filter:hue-rotate(40deg) brightness(1.25)}
+.fz .tx{animation:jit .12s 8;
+  text-shadow:3px 0 #f0f,-3px 0 #0ff}   /* RGB split */
+@keyframes jit{20%{transform:translate(-6px,1px) skewX(2deg)}
+  40%{transform:translate(6px,-1px)}}</pre></div></section>
+
+<section class='fold o4' id='nar'><span class='tab'>The typing narrator</span><div class='sh ty'><p>Every line of the story sits in an array with a colour and a pause. A function types it one letter at a time with <code>setTimeout</code>. Each run gets a number, so SKIP and REPLAY can cancel the old run instead of stacking two on top of each other.</p>
+<pre>const me = ++run;                 // this run's number
+(function ch(){
+  if (me !== run) return;           // cancelled? stop.
+  if (k < t.length){ d.textContent = t.slice(0,++k);
+    setTimeout(ch, 11); }
+  else setTimeout(nextLine, pause);
+})();</pre><p>VOICE uses <code>speechSynthesis.speak()</code>. It sounds different on every device because it’s the browser’s own voice, not a recording.</p></div></section>
+
+<section class='fold o2' id='desk'><span class='tab'>The desk, folders and paper</span><div class='sh ty'><div class='cards'>
+<div><b>Wood desk</b><p>Two <code>repeating-linear-gradient</code> layers for the grain plus a dark radial gradient.</p></div>
+<div><b>Paper grain</b><p>An SVG <code>feTurbulence</code> noise filter over the whole page with <code>mix-blend-mode: multiply</code>.</p></div>
+<div><b>Wobbly lines</b><p>The bar chart and stamp use an SVG <code>feDisplacementMap</code> so edges look hand-drawn.</p></div>
+<div><b>Folders and tabs</b><p>A box plus a small absolutely positioned tab. Each folder is rotated by under half a degree so nothing lines up perfectly.</p></div>
+<div><b>Tape and pins</b><p>Only <code>::before</code> and <code>::after</code> pieces. No images.</p></div>
+<div><b>Highlighter, red strike-through</b><p>A yellow gradient behind text, and <code>text-decoration</code> in red.</p></div></div></div></section>
+
+<section class='fold o3' id='fonts'><span class='tab'>Fonts used</span><div class='sh fs'>
+<div><small>SPECIAL ELITE · documents, headings, stamps</small><span style='font:400 24px var(--typed)'>Typed like an old case file.</span></div>
+<div><small>ARCHIVO NARROW · tabs, labels, buttons</small><span style='font:700 22px var(--sans)'>FOLDER TABS AND SMALL LABELS</span></div>
+<div><small>REENIE BEANIE · handwritten notes and the sticky note</small><span style='font:400 32px var(--hand);color:#1b3f8a'>Dev G.: this is not a cosplayer.</span></div>
+<div><small>VT323 · the monitor</small><span style='font:400 26px VT323;background:#05100a;color:#8dffb0;padding:2px 10px'>> SIGNAL LOST</span></div></div></section>
+
+<section class='fold o4' id='puz'><span class='tab'>The puzzle bits</span><div class='sh ty'>
+<p><b>Machine ID decoder.</b> The ID uses only A–Z and 2–7, which is Base32. Each letter becomes 5 bits and the bits are regrouped into 8-bit bytes. The result reads <code>blueshirt</code>. The page shows every step, so you can type any other string.</p>
+<pre>bits += ALPHABET.indexOf(ch).toString(2).padStart(5,'0');
+str  += String.fromCharCode(parseInt(bits.slice(i,i+8),2));</pre>
+<p><b>The grid game.</b> The C++ code uses <code>std::clamp</code> to keep the character inside a 24 by 12 grid. I rebuilt that in JavaScript. Turn the clamp off on the main site and the @ walks off the grid.</p>
+<pre>x = Math.min(Math.max(nx, 0), W - 1);   // the wall</pre>
+<p><b>The power chart.</b> One day is 2,684 kWh and the rest are about 25, so I used a log scale: bar height is <code>log10(v+1) / log10(2700)</code>.</p>
+<p><b>The pin board</b> saves your theory in <code>localStorage</code> on your device only. Nothing is sent anywhere.</p></div></section>
+
+<section class='fold o2' id='hon'><span class='tab'>The honest bit</span><div class='sh ty tape'><p><b>I built this with an AI assistant (Claude).</b> It helped write and fix the code and gave ideas. The story, the look and each change were my decisions, and I’m happy to explain any part of it.</p><p><b>What I scrapped.</b> My first version was a dark “hacker dashboard”. A review said it looked generic, so I rebuilt it as a desk with folders. I also tried comic panels for the story and cut them. The monitor won.</p><p><b>What I’d add with more time.</b> A real database so judges’ theories show for everyone, recorded voice acting instead of the browser voice, and a proper case-file PDF.</p><a class='go' href='/'>Back to the case →</a></div></section>
+</main>
+<footer><div class='sh pin'><p class='cap'>IN PARTNERSHIP</p><div class='pt L'><span><svg class='fe' viewBox='0 0 60 72'><use href='#fan'/></svg></span><span class='x'>×</span><span class='bg'><img src='/img2.webp' alt='DPS Faridabad'></span></div><p class='ty'>Federal Agency of Nuxeland (FAN) × Delhi Public School, Faridabad · Exun 2026</p></div></footer>
+<script>
+const $=id=>document.getElementById(id),ds=$('ds');
+document.querySelectorAll('button[data-t]').forEach(b=>b.onclick=()=>{const c=b.dataset.t,on=!ds.classList.contains(c);ds.classList.toggle(c,on);b.classList.toggle('on',!on)});
+$('gl').onclick=()=>{ds.classList.add('fz');setTimeout(()=>ds.classList.remove('fz'),1000)};
+let r=0;$('ty').onclick=()=>{const me=++r,t='Michael. An NPC. One glitch and he controls the whole world.',d=document.createElement('div');d.className='cur';$('dt').appendChild(d);let k=0;(function ch(){if(me!==r)return;if(k<t.length){d.textContent=t.slice(0,++k);setTimeout(ch,25)}else d.classList.remove('cur')})()};
+</script></body></html>
